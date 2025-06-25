@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastrar Serviço – Léo Motos</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --gray-light: #f2f2f2;
+      --gray-dark:  #4a4a4a;
+      --blue-accent: #0d6efd;
+      --black:      #000;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--gray-light), var(--gray-dark));
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar */
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--blue-accent) !important;
+    }
+
+    /* Hero simples */
+    .hero-simple {
+      background: transparent;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .hero-simple h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Conteúdo da página */
+    .page-content {
+      flex: 1 0 auto;
+      padding: 2rem 1rem;
+      color: var(--black);
+    }
+    .page-content h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .page-content form .mb-3 label {
+      font-weight: 500;
+    }
+
+    /* Botão de serviços */
+    .btn-servicos {
+      color: #fff;
+      background-color: var(--gray-dark);
+      border-color: var(--gray-dark);
+    }
+    .btn-servicos:hover,
+    .btn-servicos:focus {
+      background-color: #23272b;
+      border-color: #1d2124;
+    }
+
+    footer {
+      background-color: var(--gray-dark);
+      color: #ccc;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    /* Link de pular para acessibilidade */
+    .visually-hidden-focusable {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .visually-hidden-focusable:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="visually-hidden-focusable">
+    Ir para o conteúdo
+  </a>
+
+  {% include 'navbar.html' %}
+  {% include '_messages.html' %}
+
+  <main class="hero-simple">
+    <div class="container">
+      <h1>Cadastrar Serviço</h1>
+    </div>
+  </main>
+
+  <section id="main-content" class="page-content container">
+    <form method="post" action="{{ url_for('cadastrar_servico') }}">
+      <div class="mb-3">
+        <label for="nome">Nome</label>
+        <input
+          type="text"
+          id="nome"
+          name="nome"
+          class="form-control"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="preco">Preço</label>
+        <input
+          type="number"
+          step="0.01"
+          id="preco"
+          name="preco"
+          class="form-control"
+          required
+        />
+      </div>
+      <button type="submit" class="btn btn-servicos">Cadastrar</button>
+    </form>
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> Léo Motos. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serviços – Léo Motos</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --gray-light: #f2f2f2;
+      --gray-dark:  #4a4a4a;
+      --blue-accent: #0d6efd;
+      --black:      #000;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--gray-light), var(--gray-dark));
+      color: var(--black);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Navbar igual ao index */
+    .navbar-brand {
+      font-weight: 700;
+      color: var(--blue-accent) !important;
+    }
+
+    /* Hero simples */
+    .hero-simple {
+      background: transparent;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+    .hero-simple h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    /* Conteúdo da página */
+    .page-content {
+      flex: 1 0 auto;
+      padding: 2rem 1rem;
+      color: var(--black);
+    }
+    .page-content h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+    }
+    .page-content p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    /* Tabela responsiva */
+    .page-content .table {
+      background-color: #fff;
+    }
+
+    footer {
+      background-color: var(--gray-dark);
+      color: #ccc;
+      padding: 1rem 0;
+      text-align: center;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+
+    /* Skip link para acessibilidade */
+    .visually-hidden-focusable {
+      position: absolute;
+      left: -10000px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .visually-hidden-focusable:focus {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="visually-hidden-focusable">
+    Ir para o conteúdo
+  </a>
+
+  {% include 'navbar.html' %}
+  {% include '_messages.html' %}
+
+  <main class="hero-simple">
+    <div class="container">
+      <h1>Serviços</h1>
+    </div>
+  </main>
+
+  <section id="main-content" class="page-content container">
+    <h2>Lista de Serviços</h2>
+
+    {% if servicos %}
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Preço</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for servico in servicos %}
+            <tr>
+              <td>{{ servico.id }}</td>
+              <td>{{ servico.nome }}</td>
+              <td>{{ servico.preco }}</td>
+              <td>
+                <a href="{{ url_for('editar_servico', sid=servico.id) }}"
+                   class="btn btn-sm btn-warning">Editar</a>
+                <a href="{{ url_for('excluir_servico', sid=servico.id) }}"
+                   class="btn btn-sm btn-danger">Excluir</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p>Nenhum serviço cadastrado.</p>
+    {% endif %}
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> Léo Motos. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

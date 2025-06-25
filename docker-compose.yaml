@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:17
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: motos
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./backend/db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PGURL=postgresql://postgres:postgres@db:5432/motos
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  db-data:

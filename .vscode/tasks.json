@@ -1,0 +1,16 @@
+{
+
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo Hello World",
+            "type": "shell",
+            "command": "echo Hello World from Projeto Final C216!",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('home') }}">Léo Motos</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contato</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('pecas') }}">Peças</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('servicos') }}">Serviços</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('cadastrar_peca') }}">Cadastrar Peça</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('cadastrar_servico') }}">Cadastrar Serviço</a></li>
+        <li class="nav-item"><a class="nav-link text-danger fw-bold" href="{{ url_for('reset') }}">Reset DB</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
