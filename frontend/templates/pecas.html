@@ -24,13 +24,11 @@
       min-height: 100vh;
     }
 
-    /* Navbar idêntica ao index */
     .navbar-brand {
       font-weight: 700;
       color: var(--blue-accent) !important;
     }
 
-    /* Hero simples */
     .hero-simple {
       background: transparent;
       color: #fff;
@@ -46,7 +44,6 @@
       margin: 0;
     }
 
-    /* Conteúdo da página */
     .page-content {
       flex: 1 0 auto;
       padding: 2rem 1rem;
@@ -61,7 +58,6 @@
       line-height: 1.6;
     }
 
-    /* Tabela responsiva */
     .page-content .table {
       background-color: #fff;
     }
@@ -75,7 +71,6 @@
       flex-shrink: 0;
     }
 
-    /* Skip link para acessibilidade */
     .visually-hidden-focusable {
       position: absolute;
       left: -10000px;
@@ -117,6 +112,7 @@
               <th>Nome</th>
               <th>Descrição</th>
               <th>Preço</th>
+              <th>Quantidade</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -127,11 +123,18 @@
               <td>{{ peca.nome }}</td>
               <td>{{ peca.descricao }}</td>
               <td>{{ peca.preco }}</td>
+              <td>{{ peca.quantidade }}</td>
               <td>
-                <a href="{{ url_for('editar_peca', pid=peca.id) }}"
-                   class="btn btn-sm btn-warning">Editar</a>
-                <a href="{{ url_for('excluir_peca', pid=peca.id) }}"
-                   class="btn btn-sm btn-danger">Excluir</a>
+                <a href="{{ url_for('editar_peca', pid=peca.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                <a href="{{ url_for('excluir_peca', pid=peca.id) }}" class="btn btn-sm btn-danger">Excluir</a>
+                <form action="{{ url_for('entrada_estoque', pid=peca.id) }}" method="post" class="d-inline">
+                  <input type="number" name="quantidade" value="1" min="1" style="width: 60px;">
+                  <button type="submit" class="btn btn-sm btn-primary">Entrada</button>
+                </form>
+                <form action="{{ url_for('saida_estoque', pid=peca.id) }}" method="post" class="d-inline">
+                  <input type="number" name="quantidade" value="1" min="1" style="width: 60px;">
+                  <button type="submit" class="btn btn-sm btn-secondary">Saída</button>
+                </form>
               </td>
             </tr>
             {% endfor %}

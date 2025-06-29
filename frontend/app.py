@@ -32,7 +32,8 @@ def cadastrar_peca():
         data = {
             'nome': request.form['nome'],
             'descricao': request.form['descricao'],
-            'preco': float(request.form['preco'])
+            'preco': float(request.form['preco']),
+            'quantidade': int(request.form['quantidade'])
         }
         r = requests.post(f"{API_PECAS}/", json=data)
         if r.status_code == 201:
@@ -48,9 +49,10 @@ def editar_peca(pid):
         data = {
             'nome': request.form['nome'],
             'descricao': request.form['descricao'],
-            'preco': float(request.form['preco'])
+            'preco': float(request.form['preco']),
+            'quantidade': int(request.form['quantidade']) if request.form['quantidade'].strip() else None
         }
-        payload = {k: v for k, v in data.items() if str(v).strip() != ''}
+        payload = {k: v for k, v in data.items() if v is not None and str(v).strip() != ''}
         r = requests.patch(f"{API_PECAS}/{pid}", json=payload)
         if r.ok:
             flash('Peça atualizada', 'success')
@@ -73,6 +75,26 @@ def excluir_peca(pid):
         flash(r.json().get('detail', 'Erro ao remover'), 'danger')
     return redirect(url_for('pecas'))
 
+@app.route('/pecas/entrada/<int:pid>', methods=['POST'])
+def entrada_estoque(pid):
+    quantidade = int(request.form.get('quantidade', 1))
+    r = requests.post(f"{API_PECAS}/{pid}/entrada?quantidade={quantidade}")
+    if r.ok:
+        flash(f'Entrada de {quantidade} unidades registrada.', 'success')
+    else:
+        flash(r.json().get('detail', 'Erro na entrada de estoque'), 'danger')
+    return redirect(url_for('pecas'))
+
+@app.route('/pecas/saida/<int:pid>', methods=['POST'])
+def saida_estoque(pid):
+    quantidade = int(request.form.get('quantidade', 1))
+    r = requests.post(f"{API_PECAS}/{pid}/saida?quantidade={quantidade}")
+    if r.ok:
+        flash(f'Saída de {quantidade} unidades registrada.', 'success')
+    else:
+        flash(r.json().get('detail', 'Erro na saída de estoque'), 'danger')
+    return redirect(url_for('pecas'))
+
 # ----- Servicos -----
 @app.route('/servicos')
 def servicos():
@@ -83,38 +105,52 @@ def servicos():
 @app.route('/servicos/cadastro', methods=['GET', 'POST'])
 def cadastrar_servico():
     if request.method == 'POST':
-        data = {
-            'nome': request.form['nome'],
-            'preco': float(request.form['preco'])
-        }
-        r = requests.post(f"{API_SERVICOS}/", json=data)
-        if r.status_code == 201:
-            flash('Serviço cadastrado!', 'success')
-            return redirect(url_for('servicos'))
-        else:
-            flash(r.json().get('detail', 'Erro ao cadastrar serviço'), 'danger')
+        nome = request.form.get('nome')
+        descricao = request.form.get('descricao') or None
+        preco = request.form.get('preco', type=float)
+        
+        duracao_str = request.form.get('duracao')
+        duracao = int(duracao_str) if duracao_str else None
+
+        conn = get_db_connection()
+        conn.execute(
+            'INSERT INTO servicos (nome, descricao, preco, duracao) VALUES (%s, %s, %s, %s)',
+            (nome, descricao, preco, duracao)
+        )
+        conn.commit()
+        conn.close()
+        flash('Serviço cadastrado com sucesso!')
+        return redirect(url_for('listar_servicos'))
+
     return render_template('cadastro_servico.html')
+
 
 @app.route('/servicos/editar/<int:sid>', methods=['GET', 'POST'])
 def editar_servico(sid):
     if request.method == 'POST':
         data = {
             'nome': request.form['nome'],
-            'preco': float(request.form['preco'])
+            'descricao': request.form.get('descricao') or None,
+            'preco': float(request.form['preco']),
+            'duracao': int(request.form['duracao']) if request.form.get('duracao') else None
         }
-        payload = {k: v for k, v in data.items() if str(v).strip() != ''}
+
+        payload = {k: v for k, v in data.items() if v is not None and str(v).strip() != ''}
         r = requests.patch(f"{API_SERVICOS}/{sid}", json=payload)
+
         if r.ok:
             flash('Serviço atualizado', 'success')
         else:
             flash(r.json().get('detail', 'Erro ao atualizar'), 'danger')
         return redirect(url_for('servicos'))
+
     else:
         r = requests.get(f"{API_SERVICOS}/{sid}")
         if r.ok:
             return render_template('editar_servico.html', servico=r.json())
         flash('Serviço não encontrado', 'warning')
         return redirect(url_for('servicos'))
+
 
 @app.route('/servicos/excluir/<int:sid>')
 def excluir_servico(sid):

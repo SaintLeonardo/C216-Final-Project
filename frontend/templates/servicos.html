@@ -24,13 +24,11 @@
       min-height: 100vh;
     }
 
-    /* Navbar igual ao index */
     .navbar-brand {
       font-weight: 700;
       color: var(--blue-accent) !important;
     }
 
-    /* Hero simples */
     .hero-simple {
       background: transparent;
       color: #fff;
@@ -46,7 +44,6 @@
       margin: 0;
     }
 
-    /* Conteúdo da página */
     .page-content {
       flex: 1 0 auto;
       padding: 2rem 1rem;
@@ -61,7 +58,6 @@
       line-height: 1.6;
     }
 
-    /* Tabela responsiva */
     .page-content .table {
       background-color: #fff;
     }
@@ -75,7 +71,6 @@
       flex-shrink: 0;
     }
 
-    /* Skip link para acessibilidade */
     .visually-hidden-focusable {
       position: absolute;
       left: -10000px;
@@ -115,7 +110,9 @@
             <tr>
               <th>ID</th>
               <th>Nome</th>
+              <th>Descrição</th>
               <th>Preço</th>
+              <th>Duração (min)</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -124,7 +121,9 @@
             <tr>
               <td>{{ servico.id }}</td>
               <td>{{ servico.nome }}</td>
-              <td>{{ servico.preco }}</td>
+              <td>{{ servico.descricao or '---' }}</td>
+              <td>{{ '%.2f'|format(servico.preco) }}</td>
+              <td>{{ servico.duracao or '---' }}</td>
               <td>
                 <a href="{{ url_for('editar_servico', sid=servico.id) }}"
                    class="btn btn-sm btn-warning">Editar</a>

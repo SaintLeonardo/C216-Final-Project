@@ -24,13 +24,11 @@
       min-height: 100vh;
     }
 
-    /* Navbar */
     .navbar-brand {
       font-weight: 700;
       color: var(--blue-accent) !important;
     }
 
-    /* Hero simples */
     .hero-simple {
       background: transparent;
       color: #fff;
@@ -46,7 +44,6 @@
       margin: 0;
     }
 
-    /* Conteúdo da página */
     .page-content {
       flex: 1 0 auto;
       padding: 2rem 1rem;
@@ -60,7 +57,6 @@
       font-weight: 500;
     }
 
-    /* Botões */
     .btn-pecas {
       color: #fff;
       background-color: var(--blue-accent);
@@ -92,7 +88,6 @@
       flex-shrink: 0;
     }
 
-    /* Skip link para acessibilidade */
     .visually-hidden-focusable {
       position: absolute;
       left: -10000px;
@@ -156,6 +151,17 @@
           class="form-control"
           value="{{ peca.preco }}"
           required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="quantidade">Quantidade</label>
+        <input
+          type="number"
+          id="quantidade"
+          name="quantidade"
+          class="form-control"
+          value="{{ peca.quantidade }}"
+          min="0"
         />
       </div>
       <button type="submit" class="btn btn-pecas">Salvar Alterações</button>
